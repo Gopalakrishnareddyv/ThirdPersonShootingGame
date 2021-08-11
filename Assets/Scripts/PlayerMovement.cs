@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public CharacterController characterController;
     public float playerSpeed;
+    public float backSpeed;
     public float turnSpeed;
     Animator anim;
 
@@ -27,9 +28,14 @@ public class PlayerMovement : MonoBehaviour
         var horizontal = Input.GetAxis("Horizontal");
         var vertical = Input.GetAxis("Vertical");
         var movement = new Vector3(horizontal, 0, vertical);
-        characterController.SimpleMove(movement*Time.deltaTime*playerSpeed);
-        anim.SetFloat("Speed",movement.magnitude);
-        Quaternion direction = Quaternion.LookRotation(movement);
-        transform.rotation = Quaternion.Slerp(transform.rotation, direction, Time.deltaTime * turnSpeed); ;
+        anim.SetFloat("Speed",vertical);
+        transform.Rotate(Vector3.up, horizontal * turnSpeed * Time.deltaTime);
+        if (vertical != 0)
+        {
+            float moveSpeed = (vertical> 0) ? playerSpeed : backSpeed;
+            characterController.SimpleMove(transform.forward*vertical*moveSpeed);
+        }
+        //Quaternion direction = Quaternion.LookRotation(movement);
+        //transform.rotation = Quaternion.Slerp(transform.rotation, direction, Time.deltaTime * turnSpeed); ;
     }
 }

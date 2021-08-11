@@ -12,7 +12,6 @@ public class GunController : MonoBehaviour
     int damage = 1;
     [SerializeField] float timer;
     [SerializeField] Transform firePoint;
-    [SerializeField] Transform point;
     public ParticleSystem particleSyste;
     public GameObject bulletPrefab;
     [SerializeField] float bulletSpeed;
@@ -42,15 +41,18 @@ public class GunController : MonoBehaviour
     public void BulletSpawn()
     {
         GameObject temp = Instantiate(bulletPrefab);
-        temp.transform.position = point.transform.position;
+        temp.transform.position = firePoint.transform.position;
         temp.GetComponent<Rigidbody>().AddForce(Vector3.forward*bulletSpeed);
     }
     private void FireGun()
     {
         //particleSyste.transform.position = particlePoint.position;
         particleSyste.Play();
-        Debug.DrawRay(firePoint.position, firePoint.forward*50f, Color.red,2f);
-        Ray ray = new Ray(firePoint.position, firePoint.forward);
+
+        //Debug.DrawRay(firePoint.position, firePoint.forward*50f, Color.red,2f);
+        //Ray ray = new Ray(firePoint.position, firePoint.forward);
+        Ray ray = Camera.main.ViewportPointToRay(Vector3.one * 0.5f);
+        Debug.DrawRay(ray.origin,ray.direction*100f,Color.blue,2f);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100f))
         {
