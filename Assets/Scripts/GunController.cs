@@ -12,9 +12,10 @@ public class GunController : MonoBehaviour
     int damage = 1;
     [SerializeField] float timer;
     [SerializeField] Transform firePoint;
-    [SerializeField] Transform particlePoint;
-    [SerializeField] GameObject particle;
+    [SerializeField] Transform point;
     public ParticleSystem particleSyste;
+    public GameObject bulletPrefab;
+    [SerializeField] float bulletSpeed;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +31,7 @@ public class GunController : MonoBehaviour
             if (Input.GetButton("Fire1"))
             {
                 //Instantiate(particle, particlePoint.position, Quaternion.identity);
-                
+                BulletSpawn();
                 timer = 0f;
                 FireGun();
                 
@@ -38,6 +39,12 @@ public class GunController : MonoBehaviour
         }
     }
 
+    public void BulletSpawn()
+    {
+        GameObject temp = Instantiate(bulletPrefab);
+        temp.transform.position = point.transform.position;
+        temp.GetComponent<Rigidbody>().AddForce(Vector3.forward*bulletSpeed);
+    }
     private void FireGun()
     {
         //particleSyste.transform.position = particlePoint.position;
