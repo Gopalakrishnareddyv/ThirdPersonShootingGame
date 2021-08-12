@@ -9,7 +9,8 @@ public class PlayerMovement : MonoBehaviour
     public float backSpeed;
     public float turnSpeed;
     Animator anim;
-
+    AudioSource audioSource;
+    public AudioClip audioClip;
 
     // Start is called before the first frame update
     private void Awake()
@@ -19,7 +20,8 @@ public class PlayerMovement : MonoBehaviour
     }
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
+
     }
 
     // Update is called once per frame
@@ -34,6 +36,8 @@ public class PlayerMovement : MonoBehaviour
         {
             float moveSpeed = (vertical> 0) ? playerSpeed : backSpeed;
             characterController.SimpleMove(transform.forward*vertical*moveSpeed);
+            audioSource.clip = audioClip;
+            audioSource.Play();
         }
         //Quaternion direction = Quaternion.LookRotation(movement);
         //transform.rotation = Quaternion.Slerp(transform.rotation, direction, Time.deltaTime * turnSpeed); ;
